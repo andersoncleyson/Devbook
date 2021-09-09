@@ -1,16 +1,16 @@
 package controllers
 
 import (
+	"api/src/banco"
 	"api/src/modelos"
 	"api/src/repositorios"
 	"api/src/respostas"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-
-	"api/src/banco"
 )
 
+// CriarUsuario insere um usuário no banco de dados
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	corpoRequest, erro := ioutil.ReadAll(r.Body)
 	if erro != nil {
@@ -20,6 +20,11 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	var usuario modelos.Usuario
 	if erro = json.Unmarshal(corpoRequest, &usuario); erro != nil {
+		respostas.Erro(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	if erro = usuario.Preparar(); erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
 	}

@@ -52,6 +52,7 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// BuscarUsuarios faz a busca de todos os usuários
 func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
 	nomeOuNick := strings.ToLower(r.URL.Query().Get("usuario"))
 
@@ -101,6 +102,7 @@ func BuscarUsuario(w http.ResponseWriter, r *http.Request) {
 	respostas.JSON(w, http.StatusOK, usuario)
 }
 
+// AtualizarUsuario atualiza informações de um usuário
 func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
@@ -144,6 +146,30 @@ func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// DeletarUsuario exclui informações dos usuários
 func DeletarUsuario(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Deletando usuário!"))
+	parametros := mux.Vars(r)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+
+	if erro != nil {
+		respostas.Erro(w, http.StatusBadRequest, erro)
+
+		return
+	}
+
+	db, erro := banco.Conectar()
+	if erro != nil {
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	defer db.Close()
+
+	repositorio := repositorios.NovoRepositorioDeUsuarios(db)
+	if erro = repositorio.Deletar(usuarioID); erro != nil {
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	respostas.JSON(w, http.StatusNoContent, nil)
 }

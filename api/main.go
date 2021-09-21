@@ -1,17 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"api/src/router"
 	"api/src/config"
+	"api/src/router"
+	"fmt"
 	"log"
 	"net/http"
 )
 
-func main(){
+func main() {
 	config.Carregar()
 
 	r := router.Gerar()
+
+	fmt.Println(config.SecretKey)
 
 	fmt.Printf("Server is running in port %d", config.Porta)
 

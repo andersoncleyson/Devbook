@@ -1,11 +1,12 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"fmt"
-	"os"
 	"log"
+	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -15,12 +16,12 @@ var (
 	// Porta onde a API vai estar rodando
 	Porta = 0
 
-	// SecretKey é a cjave para assinar o token
+	// SecretKey é a chave para assinar o token
 	SecretKey []byte
 )
 
 // Carregar vai inicializar as variáveis de ambiente
-func Carregar(){
+func Carregar() {
 	var erro error
 
 	if erro = godotenv.Load(); erro != nil {

@@ -13,8 +13,6 @@ func main() {
 
 	r := router.Gerar()
 
-	fmt.Println(config.SecretKey)
-
 	fmt.Printf("Server is running in port %d", config.Porta)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Porta), r))

@@ -35,6 +35,5 @@ var rotasPublicacoes = []Rota {
 		Metodo: http.MethodDelete,
 		Funcao:	controllers.DeletarPublicacao,
 		RequerAutenticacao:	true,
-	}
-}
+	},
 }
